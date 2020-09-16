@@ -48,6 +48,7 @@
     "find-up": "^5.0.0",
     "fs-access": "^1.0.1",
     "git-semver-tags": "^4.0.0",
+    "gl-got": "^9.0.3",
     "semver": "^7.1.1",
     "stringify-package": "^1.0.1",
     "yargs": "^15.3.1"

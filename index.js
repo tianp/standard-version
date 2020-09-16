@@ -5,6 +5,8 @@ const fs = require('fs')
 const latestSemverTag = require('./lib/latest-semver-tag')
 const path = require('path')
 const printError = require('./lib/print-error')
+const push = require('./lib/lifecycles/push')
+const release = require('./lib/lifecycles/release')
 const tag = require('./lib/lifecycles/tag')
 const { resolveUpdaterObjectFromArgument } = require('./lib/updaters')
 
@@ -62,9 +64,11 @@ module.exports = async function standardVersion (argv) {
     }
 
     const newVersion = await bump(args, version)
-    await changelog(args, newVersion)
+    const changelogs = await changelog(args, newVersion)
     await commit(args, newVersion)
     await tag(newVersion, pkg ? pkg.private : false, args)
+    await push(newVersion, args)
+    await release(newVersion, changelogs)
   } catch (err) {
     printError(args, err.message)
     throw err
